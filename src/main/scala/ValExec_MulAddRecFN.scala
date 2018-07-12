@@ -83,6 +83,7 @@ class ValExec_MulAddRecFN(expWidth: Int, sigWidth: Int) extends Module
 }
 
 class ValExec_MulAddRecF16 extends ValExec_MulAddRecFN(5, 11)
+class ValExec_MulAddRecBF16 extends ValExec_MulAddRecFN(8, 7)
 class ValExec_MulAddRecF32 extends ValExec_MulAddRecFN(8, 24)
 class ValExec_MulAddRecF64 extends ValExec_MulAddRecFN(11, 53)
 
@@ -129,6 +130,7 @@ class ValExec_MulAddRecFN_add(expWidth: Int, sigWidth: Int) extends Module
 }
 
 class ValExec_MulAddRecF16_add extends ValExec_MulAddRecFN_add(5, 11)
+class ValExec_MulAddRecBF16_add extends ValExec_MulAddRecFN_add(8, 7)
 class ValExec_MulAddRecF32_add extends ValExec_MulAddRecFN_add(8, 24)
 class ValExec_MulAddRecF64_add extends ValExec_MulAddRecFN_add(11, 53)
 
@@ -176,6 +178,7 @@ class ValExec_MulAddRecFN_mul(expWidth: Int, sigWidth: Int) extends Module
 }
 
 class ValExec_MulAddRecF16_mul extends ValExec_MulAddRecFN_mul(5, 11)
+class ValExec_MulAddRecBF16_mul extends ValExec_MulAddRecFN_mul(8, 7)
 class ValExec_MulAddRecF32_mul extends ValExec_MulAddRecFN_mul(8, 24)
 class ValExec_MulAddRecF64_mul extends ValExec_MulAddRecFN_mul(11, 53)
 

@@ -1,0 +1,122 @@
+#!/usr/bin/python
+
+import os
+objects_test = ['MulAddRecF16_add']
+objects_fma = [\
+ 'MulAddRecF16_add',\
+ 'MulAddRecF16_mul',\
+ 'MulAddRecF16',\
+ 'MulAddRecBF16_add',\
+ 'MulAddRecBF16_mul',\
+ 'MulAddRecBF16',\
+ 'MulAddRecF32_add',\
+ 'MulAddRecF32_mul',\
+ 'MulAddRecF32',\
+ 'MulAddRecF64_add',\
+ 'MulAddRecF64_mul',\
+ 'MulAddRecF64'\
+]
+
+objects_full = [\
+ 'f16FromRecF16',\
+ 'f32FromRecF32',\
+ 'f64FromRecF64',\
+ 'UI32ToRecF16',\
+ 'UI32ToRecF32',\
+ 'UI32ToRecF64',\
+ 'UI64ToRecF16',\
+ 'UI64ToRecF32',\
+ 'UI64ToRecF64',\
+ 'I32ToRecF16',\
+ 'I32ToRecF32',\
+ 'I32ToRecF64',\
+ 'I64ToRecF16',\
+ 'I64ToRecF32',\
+ 'I64ToRecF64',\
+ 'RecF16ToUI32',\
+ 'RecF16ToUI64',\
+ 'RecF32ToUI32',\
+ 'RecF32ToUI64',\
+ 'RecF64ToUI32',\
+ 'RecF64ToUI64',\
+ 'RecF16ToI32',\
+ 'RecF16ToI64',\
+ 'RecF32ToI32',\
+ 'RecF32ToI64',\
+ 'RecF64ToI32',\
+ 'RecF64ToI64',\
+ 'RecF16ToRecF32',\
+ 'RecF16ToRecF64',\
+ 'RecF32ToRecF16',\
+ 'RecF32ToRecF64',\
+ 'RecF64ToRecF16',\
+ 'RecF64ToRecF32',\
+ 'MulAddRecF16_add',\
+ 'MulAddRecF16_mul',\
+ 'MulAddRecF16',\
+ 'MulAddRecBF16_add',\
+ 'MulAddRecBF16_mul',\
+ 'MulAddRecBF16',\
+ 'MulAddRecF32_add',\
+ 'MulAddRecF32_mul',\
+ 'MulAddRecF32',\
+ 'MulAddRecF64_add',\
+ 'MulAddRecF64_mul',\
+ 'MulAddRecF64',\
+ 'DivSqrtRecF16_small_div',\
+ 'DivSqrtRecF16_small_sqrt',\
+ 'DivSqrtRecF32_small_div',\
+ 'DivSqrtRecF32_small_sqrt',\
+ 'DivSqrtRecF64_div',\
+ 'DivSqrtRecF64_sqrt',\
+ 'CompareRecF16_lt',\
+ 'CompareRecF16_le',\
+ 'CompareRecF16_eq',\
+ 'CompareRecF32_lt',\
+ 'CompareRecF32_le',\
+ 'CompareRecF32_eq',\
+ 'CompareRecF64_lt',\
+ 'CompareRecF64_le',\
+ 'CompareRecF64_eq',\
+]
+
+def verilog_gen(objects):
+# chisel verilog gen
+  for ob in objects:
+    os.chdir("../")
+    print("sbt -DchiselVersion=2.2.38 \"run " + ob + " --targetDir ./results/" + ob + " --backend v\"")
+    os.system("sbt -DchiselVersion=2.2.38 \"run " + ob + " --targetDir ./results/" + ob + " --backend v\"")
+def run_dc(objects):
+# DC
+  for ob in objects:
+    print("======================================================")
+    print("Run Synthesis with Design Compiler for <" + ob + ">...")
+    print("======================================================")
+    os.chdir("../results/" + ob)
+    os.system("mkdir -p result")
+    os.system("mkdir -p synthesis")
+    os.chdir("./synthesis")
+    os.system("dc_shell -x \"set top_module \\\"ValExec_" + ob + "\\\"\" -f ../../../design_compiler.tcl | tee \"run.log\"")
+    os.chdir("../../../")
+    print("======================================================")
+    print("         <" + ob + "> Synthesis Done.")
+    print("======================================================")
+def clean_dc(objects):
+  for ob in objects:
+    print "Clean All Design Compiler Results ..."
+    os.chdir("../results/" + ob)
+    os.system("rm -rf result")
+    os.system("rm -rf synthesis")
+    os.system("rm -f *.log *.mr *.svf *.pvl *.syn")
+    os.chdir("../../")
+
+def main():
+  #verilog_gen(objects_full)
+  #clean_dc(objects_full)
+  #run_dc(objects_full)
+  #verilog_gen(objects_fma)
+  clean_dc(objects_fma)
+  run_dc(objects_fma)
+  #run_dc(objects_test)
+if __name__ == "__main__":
+    main()  

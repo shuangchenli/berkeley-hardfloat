@@ -132,6 +132,14 @@ object FMATest {
                     testArgs, () => Module(new ValExec_MulAddRecF16_mul))
             case "MulAddRecF16" =>
                 chiselMain(testArgs, () => Module(new ValExec_MulAddRecF16))
+            case "MulAddRecBF16_add" =>
+                chiselMain(
+                    testArgs, () => Module(new ValExec_MulAddRecBF16_add))
+            case "MulAddRecBF16_mul" =>
+                chiselMain(
+                    testArgs, () => Module(new ValExec_MulAddRecBF16_mul))
+            case "MulAddRecBF16" =>
+                chiselMain(testArgs, () => Module(new ValExec_MulAddRecBF16))
             case "MulAddRecF32_add" =>
                 chiselMain(
                     testArgs, () => Module(new ValExec_MulAddRecF32_add))

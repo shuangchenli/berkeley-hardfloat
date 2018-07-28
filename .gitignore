@@ -9,7 +9,6 @@ test-*.log
 /berkeley-*float-3
 /testfloat_gen
 
-
 Berkeley_FPU_FreePDK45/
 *.tar.gz
 results

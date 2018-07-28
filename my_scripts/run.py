@@ -2,6 +2,17 @@
 
 import os
 objects_test = ['MulAddRecF16_add']
+objects_int = [\
+ 'ADD_INT8',\
+ 'MUL_INT8',\
+ 'FMA_INT8',\
+ 'ADD_INT16',\
+ 'MUL_INT16',\
+ 'FMA_INT16',\
+ 'ADD_INT32',\
+ 'MUL_INT32',\
+ 'FMA_INT32'\
+] 
 objects_fma = [\
  'MulAddRecF16_add',\
  'MulAddRecF16_mul',\
@@ -83,20 +94,29 @@ objects_full = [\
 def verilog_gen(objects):
 # chisel verilog gen
   for ob in objects:
-    os.chdir("../")
     print("sbt -DchiselVersion=2.2.38 \"run " + ob + " --targetDir ./results/" + ob + " --backend v\"")
     os.system("sbt -DchiselVersion=2.2.38 \"run " + ob + " --targetDir ./results/" + ob + " --backend v\"")
+
+def verilog_gen_int(objects, width_w, width_act, width_acc):
+# chisel verilog gen
+  for ob in objects:
+    for w in width_w:
+      for act in width_act:
+        for acc in width_acc:
+          print("sbt -DchiselVersion=2.2.38 \"run " + ob + " " + str(w) + " " + str(act) + " " + str(acc) + " --targetDir ./results/" + ob + str(w) + str(act) + str(acc) + " --backend v\"")
+          os.system("sbt -DchiselVersion=2.2.38 \"run " + ob + " " + str(w) + " " + str(act) + " " + str(acc) + " --targetDir ./results/" + ob + str(w) + str(act) + str(acc) + " --backend v\"")
+
 def run_dc(objects):
 # DC
   for ob in objects:
     print("======================================================")
     print("Run Synthesis with Design Compiler for <" + ob + ">...")
     print("======================================================")
-    os.chdir("../results/" + ob)
+    os.chdir("./results/" + ob)
     os.system("mkdir -p result")
     os.system("mkdir -p synthesis")
     os.chdir("./synthesis")
-    os.system("dc_shell -x \"set top_module \\\"ValExec_" + ob + "\\\"\" -f ../../../design_compiler.tcl | tee \"run.log\"")
+    os.system("dc_shell -x \"set top_module \\\"ValExec_" + ob + "\\\"\" -f ../../../my_scripts/design_compiler.tcl | tee \"run.log\"")
     os.chdir("../../../")
     print("======================================================")
     print("         <" + ob + "> Synthesis Done.")
@@ -104,19 +124,34 @@ def run_dc(objects):
 def clean_dc(objects):
   for ob in objects:
     print "Clean All Design Compiler Results ..."
-    os.chdir("../results/" + ob)
+    os.chdir("./results/" + ob)
     os.system("rm -rf result")
     os.system("rm -rf synthesis")
     os.system("rm -f *.log *.mr *.svf *.pvl *.syn")
     os.chdir("../../")
+def clean_dc_int(objects):
+  for ob in objects:
+    for w in width_w:
+      for act in width_act:
+        for acc in width_acc:
+          print "Clean All Design Compiler Results ..."
+          os.chdir("./results/" + ob + str(w) + str(act) + str(acc))
+          os.system("rm -rf result")
+          os.system("rm -rf synthesis")
+          os.system("rm -f *.log *.mr *.svf *.pvl *.syn")
+          os.chdir("../../")
+
 
 def main():
   #verilog_gen(objects_full)
   #clean_dc(objects_full)
   #run_dc(objects_full)
   #verilog_gen(objects_fma)
-  clean_dc(objects_fma)
-  run_dc(objects_fma)
+  #clean_dc(objects_fma)
+  #run_dc(objects_fma)
   #run_dc(objects_test)
+  #verilog_gen(objects_int)
+  clean_dc(objects_int)
+  run_dc(objects_int)
 if __name__ == "__main__":
     main()  

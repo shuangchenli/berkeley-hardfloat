@@ -78,5 +78,6 @@ redirect -append -tee "$output_dir/Report_area.txt" {report_area -nosplit -hiera
 redirect -append -tee "$output_dir/Report_power.txt" {report_power -hier -hier_level 100 -analysis_effort high}
 redirect -append -tee "$output_dir/Report_power_netcell.txt" {report_power -net -cell -analysis_effort high -sort_mode dynamic_power}
 redirect -append -tee "$output_dir/Report_clock.txt" {report_clock -nosplit}
-redirect -append -tee "$output_dir/Report_timing.txt" {report_timing -path full -delay min -nworst 1 -max_paths 3 -significant_digits 2 -sort_by group}
+redirect -append -tee "$output_dir/Report_timing_1.txt" {report_timing -path full -delay min -nworst 1 -max_paths 3 -significant_digits 2 -sort_by group}
+redirect -append -tee "$output_dir/Report_timing_2.txt" {report_timing}
 exit

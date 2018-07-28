@@ -56,8 +56,43 @@ object equivRecFN
 object FMATest {
     def main(args: Array[String]): Unit =
     {
-        val testArgs = args.slice(1, args.length)
-        args(0) match {
+        // for INT only
+        if(args.length > 5) {
+          val testArgs = args.slice(4, args.length)
+          val width_w = args(1).toInt
+          val width_a = args(2).toInt
+          val width_acc = args(3).toInt
+          args(0) match{
+            case "ADD_INT" =>
+                chiselMain(testArgs, () => Module(new ValExec_ADD(width_w, width_a, width_acc)))
+            case "MUL_INT" =>
+                chiselMain(testArgs, () => Module(new ValExec_MUL(width_w, width_a, width_acc)))
+            case "FMA_INT" =>
+                chiselMain(testArgs, () => Module(new ValExec_FMA(width_w, width_a, width_acc)))
+          }
+        }           
+        else {
+          val testArgs = args.slice(1, args.length)
+          args(0) match {
+            case "ADD_INT8" =>
+                chiselMain(testArgs, () => Module(new ValExec_ADD_INT8))
+            case "MUL_INT8" =>
+                chiselMain(testArgs, () => Module(new ValExec_MUL_INT8))
+            case "FMA_INT8" =>
+                chiselMain(testArgs, () => Module(new ValExec_FMA_INT8))
+            case "ADD_INT16" =>
+                chiselMain(testArgs, () => Module(new ValExec_ADD_INT16))
+            case "MUL_INT16" =>
+                chiselMain(testArgs, () => Module(new ValExec_MUL_INT16))
+            case "FMA_INT16" =>
+                chiselMain(testArgs, () => Module(new ValExec_FMA_INT16))
+            case "ADD_INT32" =>
+                chiselMain(testArgs, () => Module(new ValExec_ADD_INT32))
+            case "MUL_INT32" =>
+                chiselMain(testArgs, () => Module(new ValExec_MUL_INT32))
+            case "FMA_INT32" =>
+                chiselMain(testArgs, () => Module(new ValExec_FMA_INT32)) 
+
             case "f16FromRecF16" =>
                 chiselMain(testArgs, () => Module(new ValExec_f16FromRecF16))
             case "f32FromRecF32" =>
@@ -216,7 +251,9 @@ object FMATest {
             case "CompareRecF64_eq" =>
                 chiselMain(
                     testArgs, () => Module(new ValExec_CompareRecF64_eq))
+
         }
+      }
     }
 }
 

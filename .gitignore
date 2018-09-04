@@ -10,5 +10,6 @@ test-*.log
 /testfloat_gen
 
 Berkeley_FPU_FreePDK45/
+Berkeley_FPU_FreePDK15/
 *.tar.gz
 results

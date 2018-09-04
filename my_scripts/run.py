@@ -106,7 +106,7 @@ def verilog_gen_int(objects, width_w, width_act, width_acc):
           print("sbt -DchiselVersion=2.2.38 \"run " + ob + " " + str(w) + " " + str(act) + " " + str(acc) + " --targetDir ./results/" + ob + str(w) + str(act) + str(acc) + " --backend v\"")
           os.system("sbt -DchiselVersion=2.2.38 \"run " + ob + " " + str(w) + " " + str(act) + " " + str(acc) + " --targetDir ./results/" + ob + str(w) + str(act) + str(acc) + " --backend v\"")
 
-def run_dc(objects):
+def run_dc(objects, tech):
 # DC
   for ob in objects:
     print("======================================================")
@@ -116,7 +116,10 @@ def run_dc(objects):
     os.system("mkdir -p result")
     os.system("mkdir -p synthesis")
     os.chdir("./synthesis")
-    os.system("dc_shell -x \"set top_module \\\"ValExec_" + ob + "\\\"\" -f ../../../my_scripts/design_compiler.tcl | tee \"run.log\"")
+    if(tech == 15):
+      os.system("dc_shell -x \"set top_module \\\"ValExec_" + ob + "\\\"\" -f ../../../my_scripts/design_compiler_15.tcl | tee \"run.log\"")
+    else:
+      os.system("dc_shell -x \"set top_module \\\"ValExec_" + ob + "\\\"\" -f ../../../my_scripts/design_compiler.tcl | tee \"run.log\"")
     os.chdir("../../../")
     print("======================================================")
     print("         <" + ob + "> Synthesis Done.")
@@ -145,13 +148,15 @@ def clean_dc_int(objects):
 def main():
   #verilog_gen(objects_full)
   #clean_dc(objects_full)
-  #run_dc(objects_full)
+  #run_dc(objects_full, 45)
   #verilog_gen(objects_fma)
-  #clean_dc(objects_fma)
-  #run_dc(objects_fma)
-  #run_dc(objects_test)
+  clean_dc(objects_fma)
+  #run_dc(objects_fma, 45)
+  #run_dc(objects_test, 15)
   #verilog_gen(objects_int)
   clean_dc(objects_int)
-  run_dc(objects_int)
+  #run_dc(objects_test, 15)
+  run_dc(objects_fma, 15)
+  run_dc(objects_int, 15)
 if __name__ == "__main__":
     main()  
